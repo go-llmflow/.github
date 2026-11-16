@@ -34,6 +34,14 @@ permissions:
 jobs:
   validate:
     runs-on: ubuntu-latest
+    env:
+      # The validator is the JUDGE and the container renovate.yml runs is the
+      # SUBJECT: they must be the same Renovate. This was `renovate@latest`
+      # against a floating `:44`, so a newer major's stricter --strict turned
+      # main red (config.js `dependencyDashboard: true` must migrate to
+      # `{enabled: true}`) while the runner, on 44.239.1, only warned. The same
+      # version is `renovate-version` in renovate.yml; raise both together.
+      RENOVATE_VERSION: '44.239.1'
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
@@ -135,10 +143,10 @@ jobs:
           # --help warns about this -- so the two kinds are validated
           # separately, each in the mode Renovate will actually read it in.
           if [ ${#global[@]} -gt 0 ]; then
-            npx --yes --package renovate@latest renovate-config-validator --strict "${global[@]}"
+            npx --yes --package "renovate@${RENOVATE_VERSION}" renovate-config-validator --strict "${global[@]}"
           fi
           if [ ${#repo[@]} -gt 0 ]; then
-            npx --yes --package renovate@latest renovate-config-validator --strict --no-global "${repo[@]}"
+            npx --yes --package "renovate@${RENOVATE_VERSION}" renovate-config-validator --strict --no-global "${repo[@]}"
           fi
           if [ ${#global[@]} -eq 0 ] && [ ${#repo[@]} -eq 0 ]; then
             echo "no Renovate config in this repository -- nothing validated"; exit 1
@@ -154,7 +162,7 @@ jobs:
           bad="$(mktemp -d)"
           printf '{"thisOptionDoesNotExist": true}\n' > "$bad/renovate.json"
           cd "$bad"
-          if npx --yes --package renovate@latest renovate-config-validator \
+          if npx --yes --package "renovate@${RENOVATE_VERSION}" renovate-config-validator \
                --strict --no-global renovate.json; then
             echo "SELF-TEST FAILED: the validator accepted an unknown option."
             echo "Step 3 above therefore proves nothing. Fix this before trusting it."
