@@ -26,14 +26,14 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - name: Run Renovate
-        uses: renovatebot/github-action@266fef21329c44765ad42f9dea1f01f5d2d91084 # v46.3.13
+        uses: renovatebot/github-action@ebcbb513d07ead4d9c0c2139064301db05e84a3e # v46.3.15
         with:
           configurationFile: config.js
           # Exact, not the action's floating default `44`: ci.yml validates
           # config.js with this same version (RENOVATE_VERSION there), so the
           # validator that judges the config and the engine that runs it agree.
           # Raise both together.
-          renovate-version: 44.239.1
+          renovate-version: 44.264.1
           # ⛔ RENOVATE_TOKEN must exist as a repository secret on this
           # repository. An unset secret expands to the empty string and the
           # action then fails with "'token' MUST be passed using its input or
