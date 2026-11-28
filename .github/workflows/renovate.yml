@@ -33,7 +33,7 @@ jobs:
           # config.js with this same version (RENOVATE_VERSION there), so the
           # validator that judges the config and the engine that runs it agree.
           # Raise both together.
-          renovate-version: 44.264.1
+          renovate-version: 45.3.2
           # ⛔ RENOVATE_TOKEN must exist as a repository secret on this
           # repository. An unset secret expands to the empty string and the
           # action then fails with "'token' MUST be passed using its input or
